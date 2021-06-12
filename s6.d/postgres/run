@@ -1,0 +1,6 @@
+#!/bin/sh
+echo "Hello from pg run"
+echo -e "${POSTGRES_PASSWORD}\n${POSTGRES_PASSWORD}" | initdb -A md5 --username=${POSTGRES_USER} --pwprompt
+sed -ri "s/^#(listen_addresses\s*=\s*)\S+/\1'*'/" "$PGDATA"/postgresql.conf
+echo "host all all 0.0.0.0/0 md5" >> "$PGDATA"/pg_hba.conf
+exec postgres
